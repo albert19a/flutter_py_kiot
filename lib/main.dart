@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:chaquopy/chaquopy.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -59,7 +59,24 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+    //runPythonCode();
   }
+
+  // to run PythonCode, just use executeCode function, which will return map with following format
+  // {
+  // "textOutputOrError" : output of the code / error generated while running the code
+  // }
+  Future runPythonCode() async {
+    var textOutputOrError = await Chaquopy.executeCode("python --version"); //_controller.text);
+    // DEBUG only
+    print(textOutputOrError['textOutputOrError'] ?? '');
+
+    /*
+    setState(() {
+      print(textOutputOrError['textOutputOrError'] ?? '');
+    });
+    */
+ }
 
   @override
   Widget build(BuildContext context) {

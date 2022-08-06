@@ -2,7 +2,7 @@
     package="com.example.flutter_py_kiot">
    <application
         android:label="flutter_py_kiot"
-        android:name="${applicationName}"
+        android:name="com.chaquo.python.android.PyApplication"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
