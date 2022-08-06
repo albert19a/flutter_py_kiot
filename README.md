@@ -1,16 +1,13 @@
 # flutter_py_kiot
 
-A new Flutter project.
+La funzione primaria della APP è comunicare mediante libreria KIOT python con il server di prova dell’hackathon DRSE.
+
+Leggere lo stato dell'impianto e leggerlo a voce alta.
+
+Opzionale:
+stampare lo stato nei widget
+usare firebase per ricevere notifiche di cambio stato.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+TODO
