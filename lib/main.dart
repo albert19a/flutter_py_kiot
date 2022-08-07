@@ -63,14 +63,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future runPythonCode() async {
+    /*
+      I had the same problem, as a workaround fixed it by changing
+        -val code: String = call.arguments()
+        +val code: String = call.arguments() ?: ""
+      in ChaquopyPlugin.kt
+      qui: 
+    */
     // to run PythonCode, just use executeCode function, which will return map with following format
     // {
     // "textOutputOrError" : output of the code / error generated while running the code
     // }
-    var textOutputOrError = await Chaquopy.executeCode("python --version"); //_controller.text);
+    // import sys\nprint(sys.version)
+    var textOutputOrError = await Chaquopy.executeCode("print('Hello Python!)"); //_controller.text);
     
     setState(() {
-      debugPrint(textOutputOrError['textOutputOrError'] ?? '');
+      debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
     });
  }
 
