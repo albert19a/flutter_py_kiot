@@ -64,18 +64,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future runPythonCode() async {
     /*
+      Build ERROR: non compila, chiesto aiuto, risponde davidyuk:
       I had the same problem, as a workaround fixed it by changing
         -val code: String = call.arguments()
         +val code: String = call.arguments() ?: ""
       in ChaquopyPlugin.kt
-      qui: 
+      qui: C:\Portable\flutter\.pub-cache\hosted\pub.dartlang.org\chaquopy-0.0.16\android\src\main\kotlin\com\chaquopy\chaquopy
+      devo capire come fixarlo definitivamente
     */
     // to run PythonCode, just use executeCode function, which will return map with following format
     // {
     // "textOutputOrError" : output of the code / error generated while running the code
     // }
     // import sys\nprint(sys.version)
-    var textOutputOrError = await Chaquopy.executeCode("print('Hello Python!)"); //_controller.text);
+    var textOutputOrError = await Chaquopy.executeCode("print('Hello Python!')"); //_controller.text);
     
     setState(() {
       debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
