@@ -78,9 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // }
     // import sys\nprint(sys.version)
     var textOutputOrError = await Chaquopy.executeCode("print('Hello Python!')"); //_controller.text);
-    
+    var textOutputOrError2 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
+
+
     setState(() {
       debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
+      debugPrint(textOutputOrError2['textOutputOrError'] ?? 'No error');
     });
  }
 
