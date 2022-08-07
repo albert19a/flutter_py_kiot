@@ -9,11 +9,18 @@ To be continued with:
 * print status in widget (one or one for each)
 * use firebase to get status notifications
 
+<<<<<<< HEAD
 ## Getting Started and known issues with first version made using chaquopy open source release
 APP use v12.0.1 of chaquo:
 * followed this: https://chaquo.com/chaquopy/doc/current/android.html#android-plugin
     * still had to indicate exaxt version number (v12.0.1) in project's build gradle
 * that correct this, wich is out of date (v 12.0.0 not open source): https://pub.dev/packages/chaquopy#configuration-steps-
+=======
+## First Release
+* Started from Flutter control palette selecting: Flutter: new project
+* added chaquopy
+* called execute code and print to debug window to demonstrate that I can call python
+>>>>>>> b40067cf21c8af46a83488c7938da62a8551e0a5
 
 ## Getting Started and known issues up to first release
 First version used v12.0.0 with this problems:
