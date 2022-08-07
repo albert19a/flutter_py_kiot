@@ -11,7 +11,7 @@ To be continued with:
 
 ## Getting Started and known issues up to first release
 First version used v12.0.0 with this problems:
-* the app does not build, does
+* the app does not build, does not take latest-version of chaquo
 * the app does not build due to a kotlin problem
 * the app crashes after 5 minutes because that version is not open needs licensing, as described in faq #1 here https://pub.dev/packages/chaquopy#faqs
 
