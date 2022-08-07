@@ -1,12 +1,13 @@
 # flutter_py_kiot
+This APP
+* uses chaquopy plugin in order to run python code, the Vimar KIOT python library.
+* uses test server for the Vimar DRSE hackathon
+* reads all lights of the plant and speaks out status
+* polls every 10 seconds for state chance and speak it out
 
-La funzione primaria della APP è comunicare mediante libreria KIOT python con il server di prova dell’hackathon DRSE.
-
-Leggere lo stato dell'impianto e leggerlo a voce alta.
-
-Opzionale:
-stampare lo stato nei widget
-usare firebase per ricevere notifiche di cambio stato.
+To be continued with:
+* print status in widget (one or one for each)
+* use firebase to get status notifications
 
 ## Getting Started and known issues up to first release
 First version used v12.0.0 with this problems:
