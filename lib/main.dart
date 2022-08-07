@@ -77,9 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // "textOutputOrError" : output of the code / error generated while running the code
     // }
     // import sys\nprint(sys.version)
-    var textOutputOrError = await Chaquopy.executeCode("print('Hello Python!')"); //_controller.text);
+    var textOutputOrError = await Chaquopy.executeCode("print('Hello from Mr. Python!')"); //_controller.text);
     var textOutputOrError2 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
-
 
     setState(() {
       debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');

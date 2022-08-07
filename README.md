@@ -9,6 +9,12 @@ To be continued with:
 * print status in widget (one or one for each)
 * use firebase to get status notifications
 
+## Getting Started and known issues with first version made using chaquopy open source release
+APP use v12.0.1 of chaquo:
+* followed this: https://chaquo.com/chaquopy/doc/current/android.html#android-plugin
+    * still had to indicate exaxt version number (v12.0.1) in project's build gradle
+* that correct this, wich is out of date (v 12.0.0 not open source): https://pub.dev/packages/chaquopy#configuration-steps-
+
 ## Getting Started and known issues up to first release
 First version used v12.0.0 with this problems:
 * the app does not build, does not take latest-version of chaquo
