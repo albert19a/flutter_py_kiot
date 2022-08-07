@@ -9,6 +9,11 @@ To be continued with:
 * print status in widget (one or one for each)
 * use firebase to get status notifications
 
+## First Release
+* Started from Flutter control palette selecting: Flutter: new project
+* added chaquopy
+* called execute code and print to debug window to demonstrate that I can call python
+
 ## Getting Started and known issues up to first release
 First version used v12.0.0 with this problems:
 * the app does not build, does not take latest-version of chaquo
