@@ -59,23 +59,19 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
-    //runPythonCode();
+    runPythonCode();
   }
 
-  // to run PythonCode, just use executeCode function, which will return map with following format
-  // {
-  // "textOutputOrError" : output of the code / error generated while running the code
-  // }
   Future runPythonCode() async {
+    // to run PythonCode, just use executeCode function, which will return map with following format
+    // {
+    // "textOutputOrError" : output of the code / error generated while running the code
+    // }
     var textOutputOrError = await Chaquopy.executeCode("python --version"); //_controller.text);
-    // DEBUG only
-    print(textOutputOrError['textOutputOrError'] ?? '');
-
-    /*
+    
     setState(() {
-      print(textOutputOrError['textOutputOrError'] ?? '');
+      debugPrint(textOutputOrError['textOutputOrError'] ?? '');
     });
-    */
  }
 
   @override
