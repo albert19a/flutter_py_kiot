@@ -56,6 +56,14 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
+        python {
+            pip {
+                // An sdist or wheel filename, relative to the project directory:
+                // project directory means from andriod/app
+                install "requests"
+                install "../../../../Python/KIOT lib/vimar_kiot-1.0.0-py3-none-any.whl"
+            }
+        }    
     }
 
     buildTypes {

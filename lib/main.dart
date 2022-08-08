@@ -64,7 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
     String loopVar = "text = ''";
     String forLoop = "for light in lightswitches:";
     String getNextLight = r"    text = text + '\nLight ' + light.title + ' is ' + light.onoff"; // Get a SFE_State_OnOff
-    String myCmd = "$importKIOTClient\n$importKIOTEndpoints\n$tok\n$pl\n$url\n$hndl\n$client\n$getsw\n$loopVar\n$forLoop\n$getNextLight\n";
+    String printResult = "print(text)";
+    String myCmd = "$importKIOTClient\n$importKIOTEndpoints\n$tok\n$pl\n$url\n$hndl\n$client\n$getsw\n$loopVar\n$forLoop\n$getNextLight\n$printResult";
     return myCmd;
   }
   
