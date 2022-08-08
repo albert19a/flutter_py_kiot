@@ -49,7 +49,33 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String pyCommand  = '';
 
+  String horriblePythonCodeFormatter() {
+    // DRSE Hackathon credentials
+    String importKIOTClient = "from kiot.client.vimar_kiot_client import VimarKiotClient";
+    String importKIOTEndpoints = "from kiot.endpoints.kiot_authentication import KiotAuthentication, KiotAuthenticationType";
+    String tok = "AUTH_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuR0lIV085Z1VoMVVJeWs4eHA2ZE5sNGUtTnRuZVBBdnRKRnhKaUtRRGFZIn0.eyJleHAiOjE2NjU5MzIyOTcsImlhdCI6MTY1OTQ1MjI5NywiYXV0aF90aW1lIjoxNjU5NDQ5ODYyLCJqdGkiOiI5ZmNkMmIzYS02NTQxLTRiY2UtOGRiZC1kOWI3MTYwMGIxYzYiLCJpc3MiOiJodHRwczovL3ByZXByb2QzLnZpbWFyLmNsb3VkL2F1dGgvcmVhbG1zL3ZpbWFydXNlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI0NDhjNWY1OC00Y2UzLTRmMjItOTE4Yy1iNGRiNjQ5ZDg0NGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJoYWNrYXRob25fY2xpZW50X2Jhc2ljIiwic2Vzc2lvbl9zdGF0ZSI6ImJmNjJmOWYwLWNhNDUtNGNmNC1iYWViLWQ1NGQxNjBlMGNhYyIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9wcmVwcm9kMy52aW1hci5jbG91ZC8iLCJodHRwOi8vaG9zbWFydGFpMS5wcmVwcm9kMy52aW1hci5jbG91ZC5pbnRlcm5hbDo4MDgwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImtueF9jb25zdW1wdGlvbl9jb250cm9sIGtueF9zaHV0dGVyX2NvbnRyb2wga254X3NjZW5lX3BlcnNvbmFsaXplIGtueF9sb2FkX2NvbnRyb2wga254X2FjY2Vzc19jb250cm9sIHdyaXRlIGtueF9zZW5zb3JfY29udHJvbCBrbnhfZW5lcmd5X3BlcnNvbmFsaXplIGtueF9jbGltYXRlX2NvbnRyb2wgbWFuYWdlIGtueF9zY2VuZV9jb250cm9sIG9mZmxpbmVfYWNjZXNzIGtueF9hY3R1YXRvcl9jb250cm9sIGtueF9saWdodF9jb250cm9sIGtueF9jbGltYXRlX3BlcnNvbmFsaXplIHJlYWQifQ.OtRKRqHdoVgGtPqwESHIaYQ5jtyyxtSx9GfT1Qw_1gtKJdddEd9ymqyhS1WGgtH2fQEgRvLVCcBvzr2H6YM9UEejItwKDKFGdrljojZYAcGJR6n7rJ-6NCNDGnKUlGrlwzfFZ_6UEVydntTLFMkMuuz2RcGyPMMHM63pYS8iAt2kHnij2bHCgDs55aFoMxHvxgvcHYD73ymT2d-BAm9JAnTPmeCg6YJioyb6uhZEGsmAOoHOzSMrG4NawvMChKPA8rP6vPKKQPqoYjzGk04I-B3SpokhlS1W2TCaoulYV3741n2f3VBpBOjyuytptHJ6y8SSZOX49LymFPqmhB17GQ'";
+    String pl = "KNX_PLANT_ID = 'c5759b62-2d20-43b4-93f2-fa7e7475711a'";
+    String url = "KNX_URL = 'https://knx-preprod3.vimar.cloud/api/v2'";
+    String hndl = "auth_handler = KiotAuthentication(KiotAuthenticationType.BEARER, auth_bearer_token=AUTH_TOKEN)";
+    String client = "myClient = VimarKiotClient(auth_handler, KNX_URL, KNX_PLANT_ID)";
+    String getsw = "result, lightswitches = myClient.get_available_lightswitches()"; //  # List of VimarSsLightSwitch
+    String loopVar = "text = ''";
+    String forLoop = "for light in lightswitches:";
+    String getNextLight = r"    text = text + '\nLight ' + light.title + ' is ' + light.onoff"; // Get a SFE_State_OnOff
+    String myCmd = "$importKIOTClient\n$importKIOTEndpoints\n$tok\n$pl\n$url\n$hndl\n$client\n$getsw\n$loopVar\n$forLoop\n$getNextLight\n";
+    return myCmd;
+  }
+  
+  String sampleHorriblePythonCodeFormatter() {
+    String sPl = "id = 'c5759b62-2d20-43b4-93f2-fa7e7475711a'";
+    String sTxt = "text = 'KNX_PLANT_ID = ' + id";
+    String sPrint = "print(text)";
+    String myCmd = "$sPl\n$sTxt\n$sPrint\n";
+    return myCmd;
+  }
+  
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -78,11 +104,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // }
     // import sys\nprint(sys.version)
     var textOutputOrError = await Chaquopy.executeCode("print('Hello from Mr. Python!')"); //_controller.text);
-    var textOutputOrError2 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
+    var textOutputOrError1 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
+    var textOutputOrError2 = await Chaquopy.executeCode(sampleHorriblePythonCodeFormatter()); //_controller.text);
+    var textOutputOrError3 = await Chaquopy.executeCode(horriblePythonCodeFormatter()); //_controller.text);
 
     setState(() {
       debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
+      debugPrint(textOutputOrError1['textOutputOrError'] ?? 'No error');
       debugPrint(textOutputOrError2['textOutputOrError'] ?? 'No error');
+      debugPrint(textOutputOrError3['textOutputOrError'] ?? 'No error');
     });
  }
 

@@ -1,5 +1,6 @@
 # flutter_py_kiot
-This APP
+
+## This APP
 * uses chaquopy plugin in order to run python code, the Vimar KIOT python library.
 * uses test server for the Vimar DRSE hackathon
 * reads all lights of the plant and speaks out status
