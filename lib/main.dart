@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chaquopy/chaquopy.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -108,12 +110,19 @@ class _MyHomePageState extends State<MyHomePage> {
     var textOutputOrError1 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
     var textOutputOrError2 = await Chaquopy.executeCode(sampleHorriblePythonCodeFormatter()); //_controller.text);
     var textOutputOrError3 = await Chaquopy.executeCode(horriblePythonCodeFormatter()); //_controller.text);
+    debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
+    debugPrint(textOutputOrError1['textOutputOrError'] ?? 'No error');
+    debugPrint(textOutputOrError2['textOutputOrError'] ?? 'No error');
+    debugPrint(textOutputOrError3['textOutputOrError'] ?? 'No error');
+    String toastMessage = textOutputOrError3['textOutputOrError'];
+    //textOutputOrError3.forEach((key, value) {toastMessage = toastMessage + '\n$key, $value';});
+    Fluttertoast.showToast(
+      msg: toastMessage,
+      backgroundColor: Colors.grey,
+    );
 
     setState(() {
-      debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
-      debugPrint(textOutputOrError1['textOutputOrError'] ?? 'No error');
-      debugPrint(textOutputOrError2['textOutputOrError'] ?? 'No error');
-      debugPrint(textOutputOrError3['textOutputOrError'] ?? 'No error');
+      // TODO something on GUI
     });
  }
 
