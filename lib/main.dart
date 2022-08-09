@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chaquopy/chaquopy.dart';
+// due to the strange way we get result from chaquopy we need LineSplitter
+import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 // Add voice
 import 'package:flutter_tts/flutter_tts.dart';
@@ -64,10 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
   // KIOT related variables
   var statusReadFromPlantChanged = '';
   var previousPlantStatus = '';
+  //List previousPlantStatusList = [];
   // Voice variables
   FlutterTts flutterTts = FlutterTts();
-  String language = "it-IT";
-  //String language = "en-US";
+  //String language = "it-IT";
+  String language = "en-US";
   double volume = 1; // From 0 to 1
   double pitch = 1.0;
   double rate = 0.5;
@@ -99,13 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await flutterTts.setLanguage(language);
     await flutterTts.setPitch(pitch);
   }
-
-/*
-
-    if (statusReadFromPlantChanged.isNotEmpty) {
-      text = "Your lights status, $statusReadFromPlantChanged";
-    
-     */
 
 
   Future _speak(String textToSpeak) async {
@@ -149,13 +145,30 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // Function changes class variable holdind status
+  // This function changes values of the variables of the class
   bool isStatusChanged(String newPlantStatus) {
     bool bRet = false;
     if (newPlantStatus != previousPlantStatus){
       bRet = true;
-      previousPlantStatus = statusReadFromPlantChanged = newPlantStatus;
-      // TODO: prepare statusReadFromPlantChanged with only status changed, keep all lights in plantStatusOld
+      LineSplitter ls = LineSplitter();
+      List<String> lines = ls.convert(newPlantStatus);
+      List<String> prevLines = ls.convert(previousPlantStatus);
+      List<String> newList = [];
+      for (var aLine in lines){
+        if (prevLines.contains(aLine)==false && aLine != '') {
+          // KIOT returns always name of application as first word, if we feel we do not need it we might want to remove it
+          // aLine = aLine.substring(aLine.indexOf(' '));
+          newList.add(aLine);
+        }
+      }
+      statusReadFromPlantChanged = 'Changed: $newList';  // pick first different line
+
+      // Just to see what's going on
+      debugPrint('$newList');
+      debugPrint('Voice string: $statusReadFromPlantChanged');
+
+      // Set new state
+      previousPlantStatus = newPlantStatus;
     }
     else {
       statusReadFromPlantChanged = '';
@@ -245,6 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!bStart) {
       setState(() {
         _counter = 0;
+        previousPlantStatus = '';
         _message = "Press the button to STOP";
       });
     }
