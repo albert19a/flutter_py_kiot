@@ -4,7 +4,7 @@
 * uses chaquopy plugin in order to run python code, the Vimar KIOT python library.
 * uses test server setup for the Vimar DRSE hackathon summer 2022 and precooked authentication
 * reads all lights of the plant and speaks out status
-* polls every 10 seconds for state change and speak it out
+* polls every 10 seconds for state change and speak it out, only when there is a state change
 
 To be continued with:
 * print status in widget (one or one for each)
