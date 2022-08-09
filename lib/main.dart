@@ -54,6 +54,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String startMessage = "Press the button to read status from Hackathon plant";
   String _message = '';
   int _counter = 0;
   String pyCommand  = '';
@@ -61,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int timerDurationValue = 10; // seconds
   Timer? myTimer;
   // KIOT related variables
-  var newStatusReadFromPlant = '';
+  var statusReadFromPlantChanged = '';
+  var previousPlantStatus = '';
   // Voice variables
   FlutterTts flutterTts = FlutterTts();
   String language = "it-IT";
@@ -77,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Aggiungi le tue inizializzazione potendo sfruttare il contesto della Classe
     initSpeakSettings();
     turnPeriodicTimerOn(bStart);
-    _speak();
+    _speak(startMessage);
   }
 
   turnPeriodicTimerOn(bool bTurnItOn) {
@@ -98,17 +100,17 @@ class _MyHomePageState extends State<MyHomePage> {
     await flutterTts.setPitch(pitch);
   }
 
-  Future _speak() async {
-    var text;
+/*
 
-    if (newStatusReadFromPlant.isNotEmpty) {
-      text = "Your lights status, $newStatusReadFromPlant";
-    }
-    else {
-      if (!bStart) text = "Press the button to read status from Hackathon plant";
-    }
+    if (statusReadFromPlantChanged.isNotEmpty) {
+      text = "Your lights status, $statusReadFromPlantChanged";
+    
+     */
+
+
+  Future _speak(String textToSpeak) async {
     await flutterTts.setVolume(volume);
-    await flutterTts.speak(text);
+    await flutterTts.speak(textToSpeak);
  }
 
   String horriblePythonCodeFormatter() {
@@ -140,17 +142,29 @@ class _MyHomePageState extends State<MyHomePage> {
   Future readPlantStatusUsingPythonCode() async {
     var textOutputOrError = await Chaquopy.executeCode(horriblePythonCodeFormatter()); //_controller.text);
     debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
-    newStatusReadFromPlant = textOutputOrError['textOutputOrError'];
-    Fluttertoast.showToast(
-      msg: newStatusReadFromPlant,
-      backgroundColor: Colors.grey,
-    );
+    String plantStatus = textOutputOrError['textOutputOrError'];
+    if (isStatusChanged(plantStatus)) _speak(statusReadFromPlantChanged);
     setState(() {
       _counter++;
     });
-    _speak();
   }
 
+  // Function changes class variable holdind status
+  bool isStatusChanged(String newPlantStatus) {
+    bool bRet = false;
+    if (newPlantStatus != previousPlantStatus){
+      bRet = true;
+      previousPlantStatus = statusReadFromPlantChanged = newPlantStatus;
+      // TODO: prepare statusReadFromPlantChanged with only status changed, keep all lights in plantStatusOld
+    }
+    else {
+      statusReadFromPlantChanged = '';
+    }
+    return bRet;
+  }
+
+
+  /*  Unused
   Future runPythonCode() async {
     var textOutputOrError = await Chaquopy.executeCode("print('Hello from Mr. Python!')"); //_controller.text);
     var textOutputOrError1 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
@@ -161,6 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint(textOutputOrError2['textOutputOrError'] ?? 'No error');
     debugPrint(textOutputOrError3['textOutputOrError'] ?? 'No error');
  }
+ */
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // Display location information
             Text(
               _message,
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.headline5,
             ),
             const Text(
               'Status has been read this many times:',
@@ -210,8 +225,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // Display status on screen
             Text(
-              newStatusReadFromPlant,
-              style: Theme.of(context).textTheme.headline3,
+              previousPlantStatus,
+              style: Theme.of(context).textTheme.headline5,
             ),
           ],
         ),
@@ -236,6 +251,11 @@ class _MyHomePageState extends State<MyHomePage> {
     else {
       setState(() {
         _message = "Press the button to START";
+        _speak(startMessage);
+        Fluttertoast.showToast(
+          msg: startMessage,
+          backgroundColor: Colors.grey,
+        );
       });
     }
     bStart = !bStart;
