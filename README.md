@@ -4,7 +4,7 @@
 * uses chaquopy plugin in order to run python code, the Vimar KIOT python library.
 * uses test server setup for the Vimar DRSE hackathon summer 2022 and precooked authentication
 * reads all lights of the plant and speaks out status
-* polls every 10 seconds for state chance and speak it out
+* polls every 10 seconds for state change and speak it out
 
 To be continued with:
 * print status in widget (one or one for each)
@@ -69,6 +69,14 @@ Please note that during development I found a bug, I opened an issue, mr. davidy
 
 You can find in directory /demo a sample python code to change lights status (in order to make the APP demo if nobody pushes buttons on the physical installation):
 * main_set.py
+
+* APP uses The plugin flutter_tts requires Android SDK min 21 (substitute the flutter.minSdkVersion)
+    * G:\Dev\Flutter\flutter_py_kiot\android\app\build.gradle
+        android {
+          defaultConfig {
+            minSdkVersion 21
+          }
+        }
 
 ## History
 First version of APP used chaquopy v12.0.0 with this problems:

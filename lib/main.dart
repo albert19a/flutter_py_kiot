@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:chaquopy/chaquopy.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+// Add voice
+import 'package:flutter_tts/flutter_tts.dart';
+// add timer
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -50,8 +54,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _message = '';
   int _counter = 0;
   String pyCommand  = '';
+  bool bStart = false; // premere per far partire, poi recupereremo da stato salvato
+  int timerDurationValue = 10; // seconds
+  Timer? myTimer;
+  // KIOT related variables
+  var newStatusReadFromPlant = '';
+  // Voice variables
+  FlutterTts flutterTts = FlutterTts();
+  String language = "it-IT";
+  //String language = "en-US";
+  double volume = 1; // From 0 to 1
+  double pitch = 1.0;
+  double rate = 0.5;
+
+
+  @override
+  initState() {
+    super.initState();
+    // Aggiungi le tue inizializzazione potendo sfruttare il contesto della Classe
+    initSpeakSettings();
+    turnPeriodicTimerOn(bStart);
+    _speak();
+  }
+
+  turnPeriodicTimerOn(bool bTurnItOn) {
+    // Avvia timer che legge lo stato dell'impianto
+    if (bTurnItOn) {
+      const oneSec = Duration(seconds: 10);
+      myTimer = Timer.periodic(oneSec, (Timer t) => readPlantStatusUsingPythonCode());
+    }
+    else {
+      myTimer?.cancel();
+    }
+  }
+
+
+  Future initSpeakSettings() async {
+    await flutterTts.setSpeechRate(rate);
+    await flutterTts.setLanguage(language);
+    await flutterTts.setPitch(pitch);
+  }
+
+  Future _speak() async {
+    var text;
+
+    if (newStatusReadFromPlant.isNotEmpty) {
+      text = "Your lights status, $newStatusReadFromPlant";
+    }
+    else {
+      if (!bStart) text = "Press the button to read status from Hackathon plant";
+    }
+    await flutterTts.setVolume(volume);
+    await flutterTts.speak(text);
+ }
 
   String horriblePythonCodeFormatter() {
     // DRSE Hackathon credentials
@@ -79,33 +137,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return myCmd;
   }
   
-  void _incrementCounter() {
+  Future readPlantStatusUsingPythonCode() async {
+    var textOutputOrError = await Chaquopy.executeCode(horriblePythonCodeFormatter()); //_controller.text);
+    debugPrint(textOutputOrError['textOutputOrError'] ?? 'No error');
+    newStatusReadFromPlant = textOutputOrError['textOutputOrError'];
+    Fluttertoast.showToast(
+      msg: newStatusReadFromPlant,
+      backgroundColor: Colors.grey,
+    );
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
-    runPythonCode();
+    _speak();
   }
 
   Future runPythonCode() async {
-    /*
-      Build ERROR: non compila, chiesto aiuto, risponde davidyuk:
-      I had the same problem, as a workaround fixed it by changing
-        -val code: String = call.arguments()
-        +val code: String = call.arguments() ?: ""
-      in ChaquopyPlugin.kt
-      qui: C:\Portable\flutter\.pub-cache\hosted\pub.dartlang.org\chaquopy-0.0.16\android\src\main\kotlin\com\chaquopy\chaquopy
-      devo capire come fixarlo definitivamente
-    */
-    // to run PythonCode, just use executeCode function, which will return map with following format
-    // {
-    // "textOutputOrError" : output of the code / error generated while running the code
-    // }
-    // import sys\nprint(sys.version)
     var textOutputOrError = await Chaquopy.executeCode("print('Hello from Mr. Python!')"); //_controller.text);
     var textOutputOrError1 = await Chaquopy.executeCode("import sys\nprint(sys.version)"); //_controller.text);
     var textOutputOrError2 = await Chaquopy.executeCode(sampleHorriblePythonCodeFormatter()); //_controller.text);
@@ -114,16 +160,6 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint(textOutputOrError1['textOutputOrError'] ?? 'No error');
     debugPrint(textOutputOrError2['textOutputOrError'] ?? 'No error');
     debugPrint(textOutputOrError3['textOutputOrError'] ?? 'No error');
-    String toastMessage = textOutputOrError3['textOutputOrError'];
-    //textOutputOrError3.forEach((key, value) {toastMessage = toastMessage + '\n$key, $value';});
-    Fluttertoast.showToast(
-      msg: toastMessage,
-      backgroundColor: Colors.grey,
-    );
-
-    setState(() {
-      // TODO something on GUI
-    });
  }
 
   @override
@@ -160,21 +196,49 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Display location information
+            Text(
+              _message,
+              style: Theme.of(context).textTheme.headline3,
+            ),
             const Text(
-              'You have pushed the button this many times:',
+              'Status has been read this many times:',
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            // Display status on screen
+            Text(
+              newStatusReadFromPlant,
+              style: Theme.of(context).textTheme.headline3,
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _startStopReadingStatus,
+        tooltip: 'Read Hackathon Plant status',
+        backgroundColor: bStart ? Colors.blue : Colors.red,
+        child: const Icon(Icons.change_circle_outlined),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  _startStopReadingStatus(){
+    // Se era accesa spengo, se era spento accendo
+    if (!bStart) {
+      setState(() {
+        _counter = 0;
+        _message = "Press the button to STOP";
+      });
+    }
+    else {
+      setState(() {
+        _message = "Press the button to START";
+      });
+    }
+    bStart = !bStart;
+    turnPeriodicTimerOn(bStart);
   }
 }
